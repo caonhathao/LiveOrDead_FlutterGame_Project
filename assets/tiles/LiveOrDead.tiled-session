@@ -1,0 +1,143 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "Map_02.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        ":/automap-tiles.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "Background.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 0.33,
+            "scaleInEditor": 0.5
+        },
+        "Bushes.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 0.5
+        },
+        "C:/Users/HaoCao/Downloads/flame-main/flame-main/packages/flame_tiled/example/assets/tiles/map.tmx": {
+            "scale": 1,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 244.5,
+                "y": 255
+            }
+        },
+        "C:/Users/HaoCao/Downloads/flame-main/flame-main/packages/flame_tiled/example/assets/tiles/map.tmx#level_ice_tileset": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "C:/Users/HaoCao/Downloads/flame-main/flame-main/packages/flame_tiled/example/assets/tiles/map.tmx#level_standard_tileset": {
+            "scaleInDock": 1
+        },
+        "D:/Develop/DevAndroid by VSCode/LiveOrDead/live_or_dead/assets/images/Background.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 0.33,
+            "scaleInEditor": 0.33
+        },
+        "D:/Develop/DevAndroid by VSCode/LiveOrDead/live_or_dead/assets/images/Background/Background.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 0.25,
+            "scaleInEditor": 0.25
+        },
+        "D:/Develop/DevAndroid by VSCode/LiveOrDead/live_or_dead/assets/images/Background/brush.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "D:/Develop/DevAndroid by VSCode/LiveOrDead/live_or_dead/assets/images/Terrain/Terrain.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 2
+        },
+        "D:/Develop/DevAndroid by VSCode/LiveOrDead/live_or_dead/assets/images/brush.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Ground.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 0.5
+        },
+        "Map_01.tmx": {
+            "expandedGroupLayers": [
+                17,
+                38,
+                36,
+                18,
+                16
+            ],
+            "expandedObjectLayers": [
+                14
+            ],
+            "scale": 1,
+            "selectedLayer": 14,
+            "viewCenter": {
+                "x": 760.5,
+                "y": 320
+            }
+        },
+        "Map_02.tmx": {
+            "expandedObjectLayers": [
+                14,
+                15
+            ],
+            "scale": 0.75,
+            "selectedLayer": 7,
+            "viewCenter": {
+                "x": 627.3333333333333,
+                "y": 474.66666666666663
+            }
+        },
+        "Map_example.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 453.3333333333333,
+                "y": 107.99999999999994
+            }
+        },
+        "brush.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 0.5
+        }
+    },
+    "last.externalTilesetPath": "D:/Develop/DevAndroid by VSCode/LiveOrDead/live_or_dead/assets/images/Background",
+    "last.imagePath": "D:/Develop/DevAndroid by VSCode/LiveOrDead/live_or_dead/assets/images/Terrain",
+    "map.height": 20,
+    "map.lastUsedFormat": "tmx",
+    "map.width": 44,
+    "openFiles": [
+        "Map_01.tmx",
+        "Map_02.tmx",
+        "D:/Develop/DevAndroid by VSCode/LiveOrDead/live_or_dead/assets/images/Terrain/Terrain.tsx"
+    ],
+    "project": "LiveOrDead.tiled-project",
+    "property.type": "int",
+    "recentFiles": [
+        "Map_01.tmx",
+        "D:/Develop/DevAndroid by VSCode/LiveOrDead/live_or_dead/assets/images/Terrain/Terrain.tsx",
+        "Map_02.tmx",
+        "D:/Develop/DevAndroid by VSCode/LiveOrDead/live_or_dead/assets/images/Background/Background.tsx",
+        "C:/Users/HaoCao/Downloads/flame-main/flame-main/packages/flame_tiled/example/assets/tiles/map.tmx",
+        "D:/Develop/DevAndroid by VSCode/LiveOrDead/live_or_dead/assets/images/Background.tsx",
+        "Map_example.tmx",
+        "D:/Develop/DevAndroid by VSCode/LiveOrDead/live_or_dead/assets/images/brush.tsx",
+        "brush.tsx",
+        "Background.tsx",
+        "Ground.tsx",
+        "Bushes.tsx"
+    ],
+    "resizeMap.removeObjects": false,
+    "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.type": 0
+}

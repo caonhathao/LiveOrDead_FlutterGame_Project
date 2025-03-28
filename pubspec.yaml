@@ -1,0 +1,37 @@
+name: live_or_dead
+description: "A new Flutter project."
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flame: ^1.26.0
+  flame_tiled: ^2.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    #import from tiles
+    - assets/tiles/Map_01.tmx
+    - assets/tiles/Map_02.tmx
+    #import tsx from images/Background
+    - assets/images/Background/
+    # import form images/characters
+    - assets/images/Characters/FreeKnight_v1/
+    # using colour1 with nooutline first
+    - assets/images/Characters/FreeKnight_v1/Colour1/NoOutline/120x80_gifs/
+    - assets/images/Characters/FreeKnight_v1/Colour1/NoOutline/120x80_PNGSheets/
+    #import tsx from images/Terrain
+    - assets/images/Terrain/
+    #import hub from images/HUD
+    - assets/images/HUD/
