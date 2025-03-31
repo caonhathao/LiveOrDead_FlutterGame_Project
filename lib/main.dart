@@ -15,7 +15,7 @@ void main() async {
     log('Error loading file: $e');
   }
 
- await Flame.device.fullScreen();
+  await Flame.device.fullScreen();
   await Flame.device.setLandscape();
   runApp(GameWidget(game: LiveOrDead()));
 }

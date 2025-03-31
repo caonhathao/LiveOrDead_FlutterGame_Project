@@ -20,8 +20,8 @@ class Level extends World {
     try {
       level = await TiledComponent.load('$levelName.tmx', Vector2.all(32));
       log('Level loaded successfully!');
-      log("Map Size: ${level.size}");
-      log("Map position: ${level.position}");
+      // log("Map Size: ${level.size}");
+      // log("Map position: ${level.position}");
     } catch (e) {
       log('Error loading file: $e');
     }

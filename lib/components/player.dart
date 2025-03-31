@@ -7,7 +7,9 @@ import 'package:live_or_dead/live_or_dead.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/services.dart';
 
-enum PlayerState { idle, running, jumping, falling }
+enum PlayerState { idle, running, attack, jumping, falling }
+
+enum PlayerHitBox { idle, attack }
 
 class Player extends SpriteAnimationGroupComponent
     with HasGameRef<LiveOrDead>, KeyboardHandler, CollisionCallbacks {
@@ -18,6 +20,8 @@ class Player extends SpriteAnimationGroupComponent
   late final SpriteAnimation runAnim;
   late final SpriteAnimation jumpAnim;
   late final SpriteAnimation fallAnim;
+  late final SpriteAnimation attackAnim;
+  late ShapeHitbox hitbox;
   final double stepTime = 0.05;
 
   final double _gravity = 9.8;
@@ -27,19 +31,29 @@ class Player extends SpriteAnimationGroupComponent
   double moveSpeed = 100;
   bool isTouchingLeft = false;
   bool isTouchingRight = false;
+  bool isAttached = false;
   bool isOnGround = false;
   bool hasJumped = false;
   Vector2 velocity = Vector2.zero();
   List<CollisionBlock> collisionBlocks = [];
   final Vector2 fromAbove = Vector2(0, -1); // Upward direction
 
+  static final Map<PlayerHitBox, Vector2> hitBoxes = {
+    PlayerHitBox.idle: Vector2(35, 80),
+    PlayerHitBox.attack: Vector2(70, 80)
+  };
+  late Vector2 hitBox;
+
   @override
   Future<void> onLoad() async {
     await _loadAllAnimations();
     current = PlayerState.idle;
-    await add(RectangleHitbox(size: Vector2(35, 80), position: Vector2(40, 0))
+    hitBox = hitBoxes[PlayerHitBox.idle] ?? Vector2.zero();
+    hitbox = RectangleHitbox(size: hitBox, position: Vector2(40, 0))
       ..debugMode = true
-      ..debugColor = Color.fromARGB(235, 189, 0, 0));
+      ..debugColor = Color.fromARGB(235, 189, 0, 0);
+
+    await add(hitbox);
     return super.onLoad();
   }
 
@@ -79,7 +93,7 @@ class Player extends SpriteAnimationGroupComponent
         velocity.y = 0;
       }
       // position += collisionNormal.scaled(separateDistance);
-      position.y = other.position.y-size.y;
+      position.y = other.position.y - size.y;
     }
 
     super.onCollision(intersectionPoints, other);
@@ -104,6 +118,9 @@ class Player extends SpriteAnimationGroupComponent
         .createAnimation(row: 0, stepTime: stepTime, to: 1, from: 0);
     fallAnim = _animationSpriteSheet('_JumpFallInbetween')
         .createAnimation(row: 0, stepTime: stepTime, to: 2, from: 0);
+    attackAnim = _animationSpriteSheet('_AttackComboNoMovement')
+        .createAnimation(
+            row: 0, stepTime: stepTime, to: 9, from: 0, loop: false);
 
     //List fo all animations
     animations = {
@@ -111,16 +128,12 @@ class Player extends SpriteAnimationGroupComponent
       PlayerState.running: runAnim,
       PlayerState.jumping: jumpAnim,
       PlayerState.falling: fallAnim,
+      PlayerState.attack: attackAnim,
     };
 
     dev.log('Animations loaded successfully!');
     return super.onLoad();
   }
-
-  // void checkLoaded() {
-  //   dev.log(
-  //       'Loaded files: ${gameRef.images.fromCache('Characters/FreeKnight_v1/Colour1/NoOutline/120x80_PNGSheets/_Idle.png')}');
-  // }
 
   SpriteSheet _animationSpriteSheet(String nameAnimation) {
     return SpriteSheet(
@@ -141,8 +154,10 @@ class Player extends SpriteAnimationGroupComponent
     position.x += velocity.x * dt;
   }
 
-  void _updatePlayerState() {
+  Future<void> _updatePlayerState() async {
     PlayerState state = PlayerState.idle;
+    hitBox = hitBoxes[PlayerHitBox.idle] ?? Vector2.zero();
+
     if (velocity.x < 0 && scale.x > 0) {
       flipHorizontallyAroundCenter();
     } else if (velocity.x > 0 && scale.x < 0) {
@@ -157,6 +172,21 @@ class Player extends SpriteAnimationGroupComponent
       state = PlayerState.running;
     }
 
+    if (isAttached) {
+      state = PlayerState.attack;
+      hitBox = hitBoxes[PlayerHitBox.attack] ?? Vector2.zero();
+
+      animationTicker?.onComplete = () {
+        state = PlayerState.idle;
+        isAttached = false;
+      };
+    }
+    remove(hitbox);
+    hitbox = RectangleHitbox(size: hitBox, position: Vector2(40, 0))
+      ..debugMode = true
+      ..debugColor = Color.fromARGB(235, 189, 0, 0);
+
+    await add(hitbox);
     current = state;
   }
 

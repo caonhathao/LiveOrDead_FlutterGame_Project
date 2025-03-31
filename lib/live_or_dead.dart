@@ -3,6 +3,7 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'dart:async';
 import 'package:flame/flame.dart';
+import 'package:live_or_dead/components/controller.dart';
 import 'dart:developer';
 import 'package:live_or_dead/levels/level.dart';
 import 'package:flame/components.dart';
@@ -57,8 +58,9 @@ class LiveOrDead extends FlameGame
       Future.value(add(camera)),
       Future.value(add(world)),
     ]);
-    addJoystick();
 
+    addJoystick();
+    addActionButton();
     return super.onLoad();
   }
 
@@ -109,29 +111,33 @@ class LiveOrDead extends FlameGame
     // log('default joystick position: $joystick.position');
   }
 
+  Future<void> addActionButton() async {
+    final atkButton = GameButton(
+        position: Vector2(40 * 32, 15 * 32),
+        size: Vector2(120, 120),
+        imagePath: 'HUD/AtkButton.png',
+        onPressed: () {
+          player.isAttached = true;
+        });
+    camera.viewport.add(atkButton);
+  }
+
   void updateJoystick() {
     switch (joystick.direction) {
       case JoystickDirection.upLeft:
       case JoystickDirection.downLeft:
       case JoystickDirection.left:
-        // player.direction = PlayerDirection.left;
-        // player.current = PlayerState.running;
         player.horizonalMovement = -1;
         break;
       case JoystickDirection.upRight:
       case JoystickDirection.downRight:
       case JoystickDirection.right:
-        // player.direction = PlayerDirection.right;
-        // player.current = PlayerState.running;
         player.horizonalMovement = 1;
         break;
       case JoystickDirection.up:
-        // player.direction = PlayerDirection.jump;
-        // player.current = PlayerState.jumping;
         player.hasJumped = true;
         break;
       default:
-        // player.direction = PlayerDirection.none;
         player.horizonalMovement = 0;
         break;
     }
