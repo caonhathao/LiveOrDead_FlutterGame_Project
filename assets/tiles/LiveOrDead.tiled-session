@@ -68,11 +68,11 @@
         },
         "Map_01.tmx": {
             "expandedGroupLayers": [
-                18,
-                36,
                 16,
                 17,
-                38
+                38,
+                36,
+                18
             ],
             "expandedObjectLayers": [
                 14
@@ -89,11 +89,11 @@
                 15,
                 14
             ],
-            "scale": 0.75,
+            "scale": 1,
             "selectedLayer": 7,
             "viewCenter": {
-                "x": 627.3333333333333,
-                "y": 474.66666666666663
+                "x": 932.5,
+                "y": 325
             }
         },
         "Map_example.tmx": {
@@ -111,22 +111,23 @@
         }
     },
     "last.externalTilesetPath": "D:/Develop/DevAndroid by VSCode/LiveOrDead/live_or_dead/assets/images/Background",
-    "last.imagePath": "D:/Develop/DevAndroid by VSCode/LiveOrDead/live_or_dead/assets/images/Terrain",
+    "last.imagePath": "C:/Users/HaoCao/Downloads",
     "map.height": 20,
     "map.lastUsedFormat": "tmx",
     "map.width": 44,
     "openFiles": [
         "Map_01.tmx",
         "Map_02.tmx",
-        "D:/Develop/DevAndroid by VSCode/LiveOrDead/live_or_dead/assets/images/Terrain/Terrain.tsx"
+        "D:/Develop/DevAndroid by VSCode/LiveOrDead/live_or_dead/assets/images/Terrain/Terrain.tsx",
+        "D:/Develop/DevAndroid by VSCode/LiveOrDead/live_or_dead/assets/images/Background/Background.tsx"
     ],
     "project": "LiveOrDead.tiled-project",
     "property.type": "int",
     "recentFiles": [
         "Map_01.tmx",
+        "D:/Develop/DevAndroid by VSCode/LiveOrDead/live_or_dead/assets/images/Background/Background.tsx",
         "D:/Develop/DevAndroid by VSCode/LiveOrDead/live_or_dead/assets/images/Terrain/Terrain.tsx",
         "Map_02.tmx",
-        "D:/Develop/DevAndroid by VSCode/LiveOrDead/live_or_dead/assets/images/Background/Background.tsx",
         "C:/Users/HaoCao/Downloads/flame-main/flame-main/packages/flame_tiled/example/assets/tiles/map.tmx",
         "D:/Develop/DevAndroid by VSCode/LiveOrDead/live_or_dead/assets/images/Background.tsx",
         "Map_example.tmx",

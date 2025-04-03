@@ -4,7 +4,8 @@ import 'package:flame/game.dart';
 import 'dart:async';
 import 'package:flame/flame.dart';
 import 'package:live_or_dead/components/controller.dart';
-import 'dart:developer';
+import 'package:live_or_dead/components/enemy.dart';
+import 'dart:developer' as dev;
 import 'package:live_or_dead/levels/level.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/widgets.dart';
@@ -19,15 +20,17 @@ class LiveOrDead extends FlameGame
         HasCollisionDetection {
   @override
   Color backgroundColor() => const Color.fromARGB(255, 59, 59, 59);
-  Player player = Player(
-    uriCharacter: 'Characters/FreeKnight_v1/Colour1/NoOutline/120x80_PNGSheets',
-  );
-  late JoystickComponent joystick;
-
   LiveOrDead()
       : super(
             camera: CameraComponent.withFixedResolution(
                 width: 32 * 44, height: 32 * 20));
+  Player player = Player(
+    uriCharacter: 'Characters/FreeKnight_v1/Colour1/NoOutline/120x80_PNGSheets',
+  );
+  Enemy enemy = Enemy(uriEnemy: 'Enemy/NightBorne/80x80_PNGSheets');
+
+  late JoystickComponent joystick;
+  bool isEndGame = false;
 
   Future<void> reloadAllImages() async {
     Flame.images.clearCache();
@@ -35,7 +38,7 @@ class LiveOrDead extends FlameGame
 
   @override
   Future<void> onLoad() async {
-    log('Initializing game...');
+    dev.log('Initializing game...');
 
     //Load all images into cache
     await images.loadAllImages();
@@ -52,6 +55,7 @@ class LiveOrDead extends FlameGame
     world = Level(
       levelName: 'Map_02',
       player: player,
+      enemy: enemy,
     );
 
     await Future.wait([
@@ -67,6 +71,8 @@ class LiveOrDead extends FlameGame
   @override
   void update(double dt) {
     updateJoystick();
+    enemy.playerPosition = player.position;
+    //do someting here if player death - stop game
     super.update(dt);
   }
 
@@ -87,7 +93,7 @@ class LiveOrDead extends FlameGame
   @override
   void onMount() {
     super.onMount();
-    log("Level has been mounted to the world!");
+    dev.log("Level has been mounted to the world!");
   }
 
   Future<void> addJoystick() async {
@@ -117,7 +123,10 @@ class LiveOrDead extends FlameGame
         size: Vector2(120, 120),
         imagePath: 'HUD/AtkButton.png',
         onPressed: () {
-          player.isAttached = true;
+          player.isAttack = true;
+        },
+        onReleased: () {
+          player.isFight = true;
         });
     camera.viewport.add(atkButton);
   }

@@ -4,12 +4,14 @@ import 'package:flutter/widgets.dart';
 
 class GameButton extends SpriteComponent with TapCallbacks {
   final VoidCallback onPressed;
+  final VoidCallback onReleased;
 
   GameButton({
     required Vector2 position,
     required Vector2 size,
     required String imagePath,
     required this.onPressed,
+    required this.onReleased,
   }) : super(position: position, size: size) {
     _imagePath = imagePath;
     anchor = Anchor.center;
@@ -24,6 +26,11 @@ class GameButton extends SpriteComponent with TapCallbacks {
 
   @override
   void onTapDown(TapDownEvent event) {
+    onReleased();
+  }
+
+  @override
+  void onTapUp(TapUpEvent event) {
     onPressed();
   }
 }

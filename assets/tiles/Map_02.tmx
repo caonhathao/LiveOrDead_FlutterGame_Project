@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="44" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="16" nextobjectid="11">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="44" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="17" nextobjectid="13">
  <tileset firstgid="1" source="../images/Terrain/Terrain.tsx"/>
  <tileset firstgid="133" source="../images/Background/Background.tsx"/>
  <tileset firstgid="140" source="../images/Background/brush.tsx"/>
@@ -24,8 +24,11 @@
    eJztkjEKgDAMRXsBdRVX6ygexUu0c5318qbQgKhNg1XskA8Ph4TvT1KlRCKRSCQSfamZQUkyB2zAHL7mv2gX+d1VQJ2gFPndtcACTDdowCU8OPN6msysuNse2Ii8q6Lf9hhmis2MtS4zL+7WMfJagjb0xDywNijeHSj6xL8wb44H1qgbnG9B1Th5czywRvWce5/66Bc8/si7A3jOQgo=
   </data>
  </layer>
- <objectgroup id="14" name="spawnPoints">
-  <object id="2" name="Player" type="Player" x="906.333" y="344" width="40" height="80"/>
+ <objectgroup id="16" name="Enemy">
+  <object id="11" name="Enemy" type="Enemy" x="928" y="66" width="80" height="80"/>
+ </objectgroup>
+ <objectgroup id="14" name="Player">
+  <object id="2" name="Player" type="Player" x="499.666" y="318" width="40" height="80"/>
  </objectgroup>
  <objectgroup id="15" name="GroundCollision">
   <object id="3" name="GroundCollision" type="GroundCollision" x="-0.333333" y="543.667" width="230.394" height="97"/>
