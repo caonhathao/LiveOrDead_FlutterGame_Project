@@ -21,17 +21,19 @@ flutter:
   uses-material-design: true
 
   assets:
-    #import from tiles
+    #import tiled maps
     - assets/tiles/Map_01.tmx
     - assets/tiles/Map_02.tmx
-    #import tsx from images/Background
+    #import tileset from images/Background
     - assets/images/Background/
-    # import form images/characters
+    # import from images/characters
     - assets/images/Characters/FreeKnight_v1/
     # using colour1 with nooutline first
     - assets/images/Characters/FreeKnight_v1/Colour1/NoOutline/120x80_gifs/
     - assets/images/Characters/FreeKnight_v1/Colour1/NoOutline/120x80_PNGSheets/
-    #import tsx from images/Terrain
+    #import tileset from images/Terrain
     - assets/images/Terrain/
     #import hub from images/HUD
     - assets/images/HUD/
+    #import from images/Enemy/NightBorne/Idle
+    - assets/images/Enemy/NightBorne/80x80_PNGSheets/
