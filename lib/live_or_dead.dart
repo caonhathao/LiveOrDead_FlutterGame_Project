@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flame/flame.dart';
 import 'package:live_or_dead/components/controller.dart';
 import 'package:live_or_dead/components/enemy.dart';
+import 'package:live_or_dead/components/health_bar.dart';
 import 'dart:developer' as dev;
 import 'package:live_or_dead/levels/level.dart';
 import 'package:flame/components.dart';
@@ -30,6 +31,7 @@ class LiveOrDead extends FlameGame
   Enemy enemy = Enemy(uriEnemy: 'Enemy/NightBorne/80x80_PNGSheets');
 
   late JoystickComponent joystick;
+  late HealthBar healthBar;
   bool isEndGame = false;
 
   Future<void> reloadAllImages() async {
@@ -63,6 +65,7 @@ class LiveOrDead extends FlameGame
       Future.value(add(world)),
     ]);
 
+    addHealthBar();
     addJoystick();
     addActionButton();
     return super.onLoad();
@@ -71,6 +74,8 @@ class LiveOrDead extends FlameGame
   @override
   void update(double dt) {
     updateJoystick();
+
+    healthBar.updateHealth(player.healthPoint.toDouble());
     enemy.playerPosition = player.position;
     //do someting here if player death - stop game
     super.update(dt);
@@ -129,6 +134,15 @@ class LiveOrDead extends FlameGame
           player.isFight = true;
         });
     camera.viewport.add(atkButton);
+  }
+
+  void addHealthBar() {
+    healthBar = HealthBar(
+        maxHealth: 120,
+        currentHealth: player.healthPoint.toDouble(),
+        position: Vector2(20, 20));
+    healthBar.priority = 90;
+    camera.viewport.add(healthBar);
   }
 
   void updateJoystick() {

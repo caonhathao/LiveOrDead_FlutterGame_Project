@@ -37,3 +37,5 @@ flutter:
     - assets/images/HUD/
     #import from images/Enemy/NightBorne/Idle
     - assets/images/Enemy/NightBorne/80x80_PNGSheets/
+    #import HeartBar from images/Others/HeartBar/
+    - assets/images/Others/HeartBar/
