@@ -10,12 +10,12 @@ import 'package:live_or_dead/components/utils.dart/';
 
 enum PlayerState { idle, running, attack, jumping, falling, death }
 
-enum PlayerHitBox { idle, attack }
+enum PlayerHitBox { idle, attack, death, running, jumping }
 
 class Player extends SpriteAnimationGroupComponent
     with HasGameRef<LiveOrDead>, KeyboardHandler, CollisionCallbacks {
   Player({position, required this.uriCharacter})
-      : super(priority: 10, position: position, size: Vector2(120, 80)) {
+      : super(priority: 10, position: position, anchor: Anchor.bottomLeft) {
     debugMode = true;
   }
   String uriCharacter;
@@ -49,8 +49,11 @@ class Player extends SpriteAnimationGroupComponent
   final Vector2 fromAbove = Vector2(0, -1); // Upward direction
 
   static final Map<PlayerHitBox, Vector2> hitBoxes = {
-    PlayerHitBox.idle: Vector2(35, 80),
-    PlayerHitBox.attack: Vector2(70, 80)
+    PlayerHitBox.idle: Vector2(21, 80),
+    PlayerHitBox.attack: Vector2(80, 80),
+    PlayerHitBox.running: Vector2(30, 80),
+    PlayerHitBox.death: Vector2(55, 80),
+    PlayerHitBox.jumping: Vector2(25, 80),
   };
   late Vector2 hitBox;
 
@@ -58,8 +61,10 @@ class Player extends SpriteAnimationGroupComponent
   Future<void> onLoad() async {
     await _loadAllAnimations();
     current = PlayerState.idle;
-    hitBox = hitBoxes[PlayerHitBox.idle] ?? Vector2.zero();
-    hitbox = RectangleHitbox(size: hitBox, position: Vector2(40, 0))
+    size = idleAnim.frames.first.sprite.srcSize;
+
+    hitBox = hitBoxes[PlayerHitBox.idle] ?? size;
+    hitbox = RectangleHitbox(size: hitBox, position: Vector2(0, 0))
       ..debugMode = true
       ..debugColor = Color.fromARGB(235, 189, 0, 0);
 
@@ -78,6 +83,9 @@ class Player extends SpriteAnimationGroupComponent
     } else {
       //dev.log('Player is death');
       current = PlayerState.death;
+      SpriteAnimation currAnim = deathAnim;
+      final newSize = currAnim.frames.first.sprite.srcSize;
+      size = newSize;
       gameRef.isEndGame = true;
     }
     super.update(dt);
@@ -98,7 +106,7 @@ class Player extends SpriteAnimationGroupComponent
         velocity.y = 0;
       }
       // position += collisionNormal.scaled(separateDistance);
-      position.y = other.position.y - size.y;
+      position.y = other.position.y;
     }
 
     if (other is Enemy) {
@@ -106,8 +114,8 @@ class Player extends SpriteAnimationGroupComponent
         if (isFight) {
           other.healthPoint -= atkPoint;
           isFight = false;
-          
-          dev.log('Enemy health point: ${other.healthPoint}');
+
+          //dev.log('Enemy health point: ${other.healthPoint}');
         }
       }
     }
@@ -125,26 +133,26 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   Future<void> _loadAllAnimations() async {
-    idleAnim =
-        animationSpriteSheet(gameRef, '_Idle', uriCharacter, Vector2(120, 80))
-            .createAnimation(row: 0, stepTime: stepTime, to: 9, from: 0);
-    runAnim =
-        animationSpriteSheet(gameRef, '_Run', uriCharacter, Vector2(120, 80))
-            .createAnimation(row: 0, stepTime: stepTime, to: 9, from: 0);
-    jumpAnim =
-        animationSpriteSheet(gameRef, '_Jump', uriCharacter, Vector2(120, 80))
-            .createAnimation(row: 0, stepTime: stepTime, to: 1, from: 0);
+    idleAnim = animationSpriteSheet(
+            gameRef, '_Idle_21x80', uriCharacter, Vector2(21, 80))
+        .createAnimation(row: 0, stepTime: stepTime, to: 9, from: 0);
+    runAnim = animationSpriteSheet(
+            gameRef, '_Run_30x80', uriCharacter, Vector2(30, 80))
+        .createAnimation(row: 0, stepTime: stepTime, to: 9, from: 0);
+    jumpAnim = animationSpriteSheet(
+            gameRef, '_Jump_25x80', uriCharacter, Vector2(25, 80))
+        .createAnimation(row: 0, stepTime: stepTime, to: 2, from: 0);
     fallAnim = animationSpriteSheet(
             gameRef, '_JumpFallInbetween', uriCharacter, Vector2(120, 80))
         .createAnimation(row: 0, stepTime: stepTime, to: 2, from: 0);
-    attackAnim = animationSpriteSheet(
-            gameRef, '_AttackComboNoMovement', uriCharacter, Vector2(120, 80))
+    attackAnim = animationSpriteSheet(gameRef, '_AttackComboNoMovement_80x80',
+            uriCharacter, Vector2(80, 80))
         .createAnimation(
             row: 0, stepTime: stepTime, to: 9, from: 0, loop: false);
-    deathAnim =
-        animationSpriteSheet(gameRef, '_Death', uriCharacter, Vector2(120, 80))
-            .createAnimation(
-                row: 0, stepTime: stepTime, to: 9, from: 0, loop: false);
+    deathAnim = animationSpriteSheet(
+            gameRef, '_Death_55x80', uriCharacter, Vector2(55, 80))
+        .createAnimation(
+            row: 0, stepTime: stepTime, to: 9, from: 0, loop: false);
 
     //List fo all animations
     animations = {
@@ -175,6 +183,7 @@ class Player extends SpriteAnimationGroupComponent
   Future<void> _updatePlayerState() async {
     PlayerState state = PlayerState.idle;
     hitBox = hitBoxes[PlayerHitBox.idle] ?? Vector2.zero();
+    SpriteAnimation currAnim = idleAnim;
 
     if (velocity.x < 0 && scale.x > 0) {
       flipHorizontallyAroundCenter();
@@ -189,16 +198,22 @@ class Player extends SpriteAnimationGroupComponent
     //Check if moving,set running state
     //is Player is jumpping, keep state jumped
     if (velocity.x > 0 || velocity.x < 0) {
-      if (hasJumped && isOnGround == false) {
+      if (isOnGround == false) {
         state = PlayerState.jumping;
+        currAnim = jumpAnim;
       } else {
         state = PlayerState.running;
+        currAnim = runAnim;
       }
+    } else if (!isOnGround) {
+      state = PlayerState.jumping;
+      currAnim=jumpAnim;
     }
 
     if (isAttack) {
       state = PlayerState.attack;
       hitBox = hitBoxes[PlayerHitBox.attack] ?? Vector2.zero();
+      currAnim = attackAnim;
 
       animationTicker?.onComplete = () {
         state = PlayerState.idle;
@@ -206,13 +221,17 @@ class Player extends SpriteAnimationGroupComponent
       };
     }
 
-    remove(hitbox);
-    hitbox = RectangleHitbox(size: hitBox, position: Vector2(40, 0))
-      ..debugMode = true
-      ..debugColor = Color.fromARGB(235, 189, 0, 0);
+    hitbox.size = hitBox;
+    hitbox.position = Vector2(0, 0);
+    // remove(hitbox);
+    // hitbox = RectangleHitbox(size: hitBox, position: Vector2(40, 0))
+    //   ..debugMode = true
+    //   ..debugColor = Color.fromARGB(235, 189, 0, 0);
 
-    await add(hitbox);
+    // await add(hitbox);
     current = state;
+    final newSize = currAnim.frames.first.sprite.srcSize;
+    size = newSize;
   }
 
   void _applyGravity(double dt) {

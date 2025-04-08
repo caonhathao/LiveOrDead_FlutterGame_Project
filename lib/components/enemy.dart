@@ -84,9 +84,9 @@ class Enemy extends SpriteAnimationGroupComponent
         lastAttackTime = 0;
       }
     } else if (healthPoint <= 0) {
-     //dev.log('Enemy died');
+      //dev.log('Enemy died');
       current = EnemyState.die;
-      animationTicker?.onComplete=(){
+      animationTicker?.onComplete = () {
         removeFromParent();
       };
     }
@@ -115,7 +115,7 @@ class Enemy extends SpriteAnimationGroupComponent
     if (other is Player) {
       //dev.log('Enemy is touching player');
       if (healthPoint > 0) {
-        // position.x = playerPosition!.x;
+        horizonalMovement = 0;
         isTouchingPlayer = true;
         if (other.healthPoint > 0) {
           isAttack = true;
@@ -124,7 +124,7 @@ class Enemy extends SpriteAnimationGroupComponent
           if (lastAttackTime.toInt() == attackCooldown.toInt()) {
             lastAttackTime = 0;
             other.healthPoint -= atkPoint;
-            dev.log('Player healthPoint: ${other.healthPoint}');
+            //dev.log('Player healthPoint: ${other.healthPoint}');
           }
         } else {
           isAttack = false;
@@ -147,6 +147,10 @@ class Enemy extends SpriteAnimationGroupComponent
     }
     if (!isColliding) {
       // isAttack = false;
+    }
+    if(other is Player){
+      isTouchingPlayer = false;
+      isAttack = false;
     }
   }
 
@@ -197,14 +201,20 @@ class Enemy extends SpriteAnimationGroupComponent
       state = EnemyState.attack;
       hitBox = hitBoxSize[EnemyHitBox.attack] ?? Vector2.zero();
       // dev.log('Attacking');
+    }else{
+          hitBox = hitBoxSize[EnemyHitBox.idle] ?? Vector2.zero();
+      state = EnemyState.idle;
     }
 
-    remove(hitbox);
-    hitbox = RectangleHitbox(size: hitBox, position: Vector2(0, 0))
-      ..debugMode = true
-      ..debugColor = Color.fromARGB(235, 189, 0, 0);
+    // remove(hitbox);
+    // hitbox = RectangleHitbox(size: hitBox, position: Vector2(0, 0))
+    //   ..debugMode = true
+    //   ..debugColor = Color.fromARGB(235, 189, 0, 0);
 
-    await add(hitbox);
+    // await add(hitbox);
+
+    hitbox.size = hitBox;
+    hitbox.position = Vector2(0, 0);
     current = state;
   }
 
@@ -222,31 +232,36 @@ class Enemy extends SpriteAnimationGroupComponent
   }
 
   void _updateEnemyMovement(double dt) {
-    if (playerPosition != null) {
-      //dev.log('player: ${playerPosition!.x} and enemy: ${position.x}');
-      if (playerPosition!.x - 116.0 > position.x) {
-        if (initialDirection == 0) {
-          initialDirection = 1;
-        }
-        horizonalMovement = 1;
-      } else if (playerPosition!.x + 116.0 < position.x) {
-        if (initialDirection == 0) {
-          initialDirection = -1;
-        }
-
-        if (initialDirection == 1 && playerPosition!.x >= position.x) {
+    if (isOnGround && isTouchingPlayer == false) {
+      if (playerPosition != null) {
+        //dev.log('player: ${playerPosition!.x} and enemy: ${position.x}');
+        if (playerPosition!.x > position.x) {
+          if (initialDirection == 0) {
+            initialDirection = 1;
+          }
           horizonalMovement = 1;
-        } else if (initialDirection == -1 && playerPosition!.x <= position.x) {
-          horizonalMovement = -1;
+        } else if (playerPosition!.x < position.x) {
+          if (initialDirection == 0) {
+            initialDirection = -1;
+          }
+          //horizonalMovement = -1;
+
+
+          if (initialDirection == 1 && playerPosition!.x >= position.x) {
+            horizonalMovement = 1;
+          } else if (initialDirection == -1 &&
+              playerPosition!.x <= position.x) {
+            horizonalMovement = -1;
+          } else {
+            horizonalMovement = (playerPosition!.x > position.x) ? 1 : -1;
+            initialDirection = 0;
+          }
         } else {
-          horizonalMovement = (playerPosition!.x > position.x) ? 1 : -1;
-          initialDirection = 0;
+          horizonalMovement = 0;
         }
       } else {
         horizonalMovement = 0;
       }
-    } else {
-      horizonalMovement = 0;
     }
     if (isTouchingPlayer == false) {
       velocity.x = horizonalMovement * moveSpeed;

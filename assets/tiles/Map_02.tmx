@@ -25,10 +25,10 @@
   </data>
  </layer>
  <objectgroup id="16" name="Enemy">
-  <object id="11" name="Enemy" type="Enemy" x="928" y="66" width="80" height="80"/>
+  <object id="11" name="Enemy" type="Enemy" x="680" y="79" width="80" height="80"/>
  </objectgroup>
  <objectgroup id="14" name="Player">
-  <object id="2" name="Player" type="Player" x="499.666" y="318" width="40" height="80"/>
+  <object id="2" name="Player" type="Player" x="940.666" y="420" width="40" height="80"/>
  </objectgroup>
  <objectgroup id="15" name="GroundCollision">
   <object id="3" name="GroundCollision" type="GroundCollision" x="-0.333333" y="543.667" width="230.394" height="97"/>
