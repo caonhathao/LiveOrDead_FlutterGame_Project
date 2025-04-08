@@ -11,6 +11,8 @@
       - Using Android Studio.
     - About language:
       - Using dart, especially flutter, is the best way to develop in Mobile.
+    - Other resources:
+      - Using [itch](https://itch.io/) to get free assets.
 3. Requirements:
     - About sritesheet:
       - With each type of character or decoration, the height is always fixed.
