@@ -29,34 +29,21 @@ class Level extends World {
     }
     await add(level);
 
-    final playerLayer = level.tileMap.getLayer<ObjectGroup>('Player');
-    if (playerLayer != null) {
-      for (final spawnPoint in playerLayer.objects) {
-        switch (spawnPoint.class_) {
-          case 'Player':
-            player.position = Vector2(spawnPoint.x, spawnPoint.y);
-            add(player);
-            break;
-          default:
-            log('Unknown spawn point type: ${spawnPoint.class_}');
-        }
-      }
-    }
-
-        final enemyLayer = level.tileMap.getLayer<ObjectGroup>('Enemy');
-    if (enemyLayer != null) {
-      for (final spawnPoint in enemyLayer.objects) {
-        switch (spawnPoint.class_) {
-          case 'Enemy':
-            enemy.position = Vector2(spawnPoint.x, spawnPoint.y);
-            add(enemy);
-            break;
-          default:
-            log('Unknown spawn point type: ${spawnPoint.class_}');
-        }
-      }
-    }
-
+    // final playerLayer = level.tileMap.getLayer<ObjectGroup>('Player');
+    // if (playerLayer != null) {
+    //   for (final spawnPoint in playerLayer.objects) {
+    //     switch (spawnPoint.class_) {
+    //       case 'Player':
+    //         player.position = Vector2(spawnPoint.x, spawnPoint.y);
+    //         add(player);
+    //         break;
+    //       default:
+    //         log('Unknown spawn point type: ${spawnPoint.class_}');
+    //     }
+    //   }
+    // }
+    _loadCharacterLayer('Player', 'Player', player);
+    _loadCharacterLayer('Enemy', 'Enemy', enemy);
     final collisionsLayer =
         level.tileMap.getLayer<ObjectGroup>("GroundCollision");
     if (collisionsLayer != null) {
@@ -81,5 +68,20 @@ class Level extends World {
     log('Level loaded!');
     player.collisionBlocks = collisionBlocks;
     return super.onLoad();
+  }
+
+  void _loadCharacterLayer(
+      String nameLayer, String className, PositionComponent obj) {
+    final layer = level.tileMap.getLayer<ObjectGroup>(nameLayer);
+    if (layer != null) {
+      for (final spawnPoint in layer.objects) {
+        if (spawnPoint.class_ == className) {
+          obj.position = Vector2(spawnPoint.x, spawnPoint.y);
+          add(obj);
+        } else {
+          log('Unknown spawn point type: ${spawnPoint.class_}');
+        }
+      }
+    }
   }
 }

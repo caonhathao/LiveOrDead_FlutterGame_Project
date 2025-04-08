@@ -76,7 +76,10 @@ class LiveOrDead extends FlameGame
     updateJoystick();
 
     healthBar.updateHealth(player.healthPoint.toDouble());
-    enemy.playerPosition = player.position;
+    if (player.isLoaded) {
+      enemy.playerPosition = player.position;
+    }
+
     //do someting here if player death - stop game
     super.update(dt);
   }
