@@ -9,11 +9,22 @@ import 'package:live_or_dead/components/player.dart';
 class Level extends World {
   final String levelName;
   final Player player;
-  final Enemy enemy;
+  // final Enemy enemy;
+  final Enemy Function(Vector2 position) enemyFactory;
+  List<Enemy> enemies = [];
+
   late TiledComponent level;
   List<CollisionBlock> collisionBlocks = [];
 
-  Level({required this.levelName, required this.player, required this.enemy}) {
+  // Level({required this.levelName, required this.player, required this.enemy}) {
+  //   priority = 1;
+  // }
+
+  Level({
+    required this.levelName,
+    required this.player,
+    required this.enemyFactory,
+  }) {
     priority = 1;
   }
 
@@ -29,21 +40,14 @@ class Level extends World {
     }
     await add(level);
 
-    // final playerLayer = level.tileMap.getLayer<ObjectGroup>('Player');
-    // if (playerLayer != null) {
-    //   for (final spawnPoint in playerLayer.objects) {
-    //     switch (spawnPoint.class_) {
-    //       case 'Player':
-    //         player.position = Vector2(spawnPoint.x, spawnPoint.y);
-    //         add(player);
-    //         break;
-    //       default:
-    //         log('Unknown spawn point type: ${spawnPoint.class_}');
-    //     }
-    //   }
-    // }
-    _loadCharacterLayer('Player', 'Player', player);
-    _loadCharacterLayer('Enemy', 'Enemy', enemy);
+    _loadCharacterLayer('Player', 'Player', (pos) => player);
+    // _loadCharacterLayer('Enemy', 'Enemy', enemy);
+    _loadCharacterLayer('Enemy', 'Enemy', (pos) {
+      final e = enemyFactory(pos);
+      enemies.add(e);
+      return e;
+    });
+
     final collisionsLayer =
         level.tileMap.getLayer<ObjectGroup>("GroundCollision");
     if (collisionsLayer != null) {
@@ -65,19 +69,26 @@ class Level extends World {
     } else {
       log('Can not find collision');
     }
+
     log('Level loaded!');
     player.collisionBlocks = collisionBlocks;
     return super.onLoad();
   }
 
   void _loadCharacterLayer(
-      String nameLayer, String className, PositionComponent obj) {
+    String nameLayer,
+    String className,
+    PositionComponent Function(Vector2 position) createComponent,
+  ) {
     final layer = level.tileMap.getLayer<ObjectGroup>(nameLayer);
     if (layer != null) {
+      //log(layer.objects.length.toString());
       for (final spawnPoint in layer.objects) {
         if (spawnPoint.class_ == className) {
-          obj.position = Vector2(spawnPoint.x, spawnPoint.y);
-          add(obj);
+          final position = Vector2(spawnPoint.x, spawnPoint.y);
+          //log(position.toString());
+          final comp = createComponent(position);
+          add(comp);
         } else {
           log('Unknown spawn point type: ${spawnPoint.class_}');
         }

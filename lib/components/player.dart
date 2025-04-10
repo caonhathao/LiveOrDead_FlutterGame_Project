@@ -36,12 +36,11 @@ class Player extends SpriteAnimationGroupComponent
   int atkPoint = 5;
   double horizonalMovement = 0;
   double lastAttackTime = 0;
-  double moveSpeed = 200;
+  double moveSpeed = 120;
   bool isTouchingLeft = false;
   bool isTouchingRight = false;
   bool isAttack = false;
-  bool isFight =
-      false; //when player finishes its atkAnim, make this flag is true and start minus point to enemy
+  bool isFight = false; //when player finishes its atkAnim, make this flag is true and start minus point to enemy
   bool isOnGround = false;
   bool hasJumped = false;
   Vector2 velocity = Vector2.zero();
@@ -207,7 +206,7 @@ class Player extends SpriteAnimationGroupComponent
       }
     } else if (!isOnGround) {
       state = PlayerState.jumping;
-      currAnim=jumpAnim;
+      currAnim = jumpAnim;
     }
 
     if (isAttack) {
