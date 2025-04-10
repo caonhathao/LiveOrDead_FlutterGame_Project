@@ -68,11 +68,11 @@
         },
         "Map_01.tmx": {
             "expandedGroupLayers": [
+                38,
+                36,
                 18,
                 16,
-                36,
-                17,
-                38
+                17
             ],
             "expandedObjectLayers": [
                 14
@@ -80,7 +80,7 @@
             "scale": 1,
             "selectedLayer": 14,
             "viewCenter": {
-                "x": 795,
+                "x": 760.5,
                 "y": 320
             }
         },
@@ -89,11 +89,11 @@
                 15,
                 14
             ],
-            "scale": 1,
-            "selectedLayer": 8,
+            "scale": 0.75,
+            "selectedLayer": 7,
             "viewCenter": {
-                "x": 755.5,
-                "y": 373
+                "x": 720.6666666666667,
+                "y": 118.66666666666669
             }
         },
         "Map_example.tmx": {

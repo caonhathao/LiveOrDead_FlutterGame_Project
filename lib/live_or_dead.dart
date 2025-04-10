@@ -28,7 +28,14 @@ class LiveOrDead extends FlameGame
   Player player = Player(
     uriCharacter: 'Characters/FreeKnight_v1/Colour1/NoOutline/120x80_PNGSheets',
   );
-  Enemy enemy = Enemy(uriEnemy: 'Enemy/NightBorne/80x80_PNGSheets');
+  // Enemy enemy = Enemy(uriEnemy: 'Enemy/NightBorne/80x80_PNGSheets');
+
+  Enemy createEnemy(Vector2 position) {
+    return Enemy(
+      position: position,
+      uriEnemy: 'Enemy/NightBorne/80x80_PNGSheets',
+    );
+  }
 
   late JoystickComponent joystick;
   late HealthBar healthBar;
@@ -57,7 +64,8 @@ class LiveOrDead extends FlameGame
     world = Level(
       levelName: 'Map_02',
       player: player,
-      enemy: enemy,
+      // enemy: enemy,
+      enemyFactory: createEnemy, // truyền vào hàm tạo enemy mới
     );
 
     await Future.wait([
@@ -77,7 +85,11 @@ class LiveOrDead extends FlameGame
 
     healthBar.updateHealth(player.healthPoint.toDouble());
     if (player.isLoaded) {
-      enemy.playerPosition = player.position;
+      // enemy.playerPosition = player.position;
+      final level = world as Level;
+      for (final enemy in level.enemies) {
+        enemy.playerPosition = player.position;
+      }
     }
 
     //do someting here if player death - stop game
